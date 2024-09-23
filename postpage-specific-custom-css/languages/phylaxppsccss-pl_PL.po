@@ -1,0 +1,138 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-02-25 18:52+0100\n"
+"PO-Revision-Date: 2020-02-25 18:58+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;_;_e\n"
+"X-Poedit-SearchPath-0: post-page-specific-custom-css.php\n"
+
+#: post-page-specific-custom-css.php:101
+msgid "Options"
+msgstr "Opcje"
+
+#: post-page-specific-custom-css.php:105
+msgid "Default values"
+msgstr "Domyślne wartości"
+
+#: post-page-specific-custom-css.php:109 post-page-specific-custom-css.php:187
+msgid "Default stylesheet for new posts"
+msgstr "Domyśle style dla nowych wpisów"
+
+#: post-page-specific-custom-css.php:113 post-page-specific-custom-css.php:203
+msgid "Default stylesheet for new pages"
+msgstr "Domyślne style dla nowych stron"
+
+#: post-page-specific-custom-css.php:117
+msgid "Code highlight"
+msgstr "Podświetlanie kodu"
+
+#: post-page-specific-custom-css.php:121
+msgid "Bigger input field"
+msgstr "Większy obszar wprowadzania"
+
+#: post-page-specific-custom-css.php:134
+msgid "Make input boxes bigger"
+msgstr "Zwiększ pola wprowadzania"
+
+#: post-page-specific-custom-css.php:138
+msgid "Make input boxes on Posts and Pages bigger"
+msgstr "Zwiększ pola wprowadzania dla wpisów i stron"
+
+#: post-page-specific-custom-css.php:151
+msgid "Enable code highlighting"
+msgstr "Włącz podświetlanie składni"
+
+#: post-page-specific-custom-css.php:155
+msgid "Enable code highlighting for fields on settings page"
+msgstr "Włącz podświetlanie składni na stronie ustawień"
+
+#: post-page-specific-custom-css.php:164
+msgid "Enable code highlighting for Posts fields"
+msgstr "Włącz podświetlanie składni we wpisach"
+
+#: post-page-specific-custom-css.php:173
+msgid "Enable code highlighting for Pages fields"
+msgstr "Włącz podświetlanie składni na stronach"
+
+#: post-page-specific-custom-css.php:176
+msgid ""
+"<strong>Warning</strong> Please consider that on weaker computers, enabling "
+"CSS highlighting may slow you down."
+msgstr ""
+"<strong>Ostrzeżenie</strong> Należy pamiętać, że na słabszych komputerach "
+"włączenie podświetlania CSS może je spowalniać."
+
+#: post-page-specific-custom-css.php:215
+msgid ""
+"You can set the pre-filled content for your newly created posts or pages."
+msgstr ""
+"Możesz ustawić wstępnie wypełnioną treść dla nowo tworzonych wpisów lub "
+"stron."
+
+#: post-page-specific-custom-css.php:227
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: post-page-specific-custom-css.php:237
+msgid "Post/Page specific custom CSS"
+msgstr "Własny CSS dla wpisów i stron"
+
+#: post-page-specific-custom-css.php:237
+msgid "Post/Page CSS"
+msgstr ""
+
+#: post-page-specific-custom-css.php:256
+msgid "Post/Page Custom CSS"
+msgstr "Własny CSS dla wpisów i stron"
+
+#: post-page-specific-custom-css.php:317
+msgid "Added by Post/Page specific custom CSS plugin, thank you for using!"
+msgstr ""
+"Dodano przez wtyczkę Post/Page specific custom CSS, dziękujemy za jej "
+"używanie!"
+
+#: post-page-specific-custom-css.php:322
+msgid "Custom CSS"
+msgstr "Spersonalizowany CSS"
+
+#: post-page-specific-custom-css.php:373
+msgid "Post custom CSS"
+msgstr "Spersonalizowany CSS wpisu"
+
+#: post-page-specific-custom-css.php:378
+msgid "Page custom CSS"
+msgstr "Spersonalizowany CSS strony"
+
+#: post-page-specific-custom-css.php:413
+msgid "Attach this CSS code only on single page view"
+msgstr "Dodaj ten kod CSS tylko na widoku pojedynczego wpisu/strony"
+
+#: post-page-specific-custom-css.php:418
+msgid ""
+"Please add only valid CSS code, it will be placed between &lt;style&gt; tags."
+msgstr ""
+"Proszę dodać tylko poprawny kod CSS, wtyczka automatycznie doda tag &lt;"
+"style&gt;."
+
+#: post-page-specific-custom-css.php:461
+msgid ""
+"Post/Page specific custom CSS will allow you to add cascade stylesheet to "
+"specific posts/pages. It will give you special area in the post/page edit "
+"field to attach your CSS. It will also let you decide if this CSS has to be "
+"added in multi-page/post view (like archive posts) or only in a single view."
+msgstr ""
+"Post/Page specific custom CSS pozwala na dodanie spersonalizowanego kodu CSS "
+"dla konkretnego wpisu lub strony. Dostaniesz specjalne miejsce do napisania "
+"kodu CSS. Będziesz mógł też zadecydować, czy kod będzie dodany na stronach z "
+"wieloma wpisami/stronami czy tylko przy wyświetlaniu pojedynczego wpisu/"
+"strony."
