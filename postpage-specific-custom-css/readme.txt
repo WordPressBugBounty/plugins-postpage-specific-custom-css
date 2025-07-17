@@ -1,50 +1,62 @@
 === Post/Page specific custom CSS ===
 
-Tags: CSS, custom, post, page, specific, custom CSS, specific page, specific post, certain page, certain post, view, single
+Tags: custom css, css per page, css per post, post styling, page styling, individual css, archive css, single view, archive view, CSS, custom, post, page, specific, custom CSS, specific page, specific post, certain page, certain post, view, single
 Requires at least: 5.0
-Tested up to: 5.8
+Tested up to: 6.8
+Requires PHP: 7.4
 Contributors: lukasznowicki
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LEXEGNRGEF7H4
-Stable tag: 0.2.4
+Stable tag: 0.2.5
 
-Post/Page specific custom CSS will allow you to add cascade stylesheet to specific posts/pages. It will give you special area in the post/page edit field to attach your CSS. It will also let you decide if this CSS has to be added in multi-page/post view (like archive posts) or only in a single view.
+Post/Page specific custom CSS allows you to add custom CSS styles to individual posts or pages. It provides a dedicated area in the post/page edit screen where you can write your CSS code. You can also choose whether the CSS should apply only to the single post/page view or also to archive views.
 
 == Description ==
 
-Post/Page specific custom CSS will allow you to add cascade stylesheet to specific posts/pages. It will give you special area in the post/page edit field to attach your CSS. It will also let you decide if this CSS has to be added in multi-page/post view (like archive posts) or only in a single view.
+Post/Page specific custom CSS allows you to add custom CSS styles to individual posts or pages. It provides a dedicated area in the post/page edit screen where you can write your CSS code. You can also choose whether the CSS should apply only to the single post/page view or also to archive views.
 
-You will see additional meta box below text input area on posts and pages screen. You may add whatever CSS you want. You may choose if you want to add this CSS code on certain single page/post or on pages like archive etc.
+A new meta box will appear below the content editor on the post and page edit screens. You can enter any custom CSS there. You can also specify whether the CSS should load only on the single post/page view or also on archive-type pages.
 
 == Installation ==
 
 = Automatic installation =
 
-Automatic installation is the easiest. Simply log in to your WordPress admin panel, go to the Plugins menu and click Add New.
+Automatic installation is the easiest way. Simply log in to your WordPress admin panel, go to the Plugins menu, and click "Add New".
 
-In the search field type Post/Page specific custom CSS and click Search Plugins. Then you can install it by simply clicking &#8220;Install Now&#8221; button.
+In the search field, type *Post/Page specific custom CSS* and click Search Plugins. Then click the “Install Now” button.
 
 = Manual installation =
 
-1. Upload `post-page-specific-custom-css` directory to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. That's all folks, have fun :)
+1. Upload the `post-page-specific-custom-css` folder to the `/wp-content/plugins/` directory.
+1. Activate the plugin through the 'Plugins' menu in WordPress.
+1. That's it – enjoy! :)
 
 == Requirements ==
 
-This plugin requires at least WordPress <b>5.0</b> (never forget to update your WP installation!) and <b>PHP 7.0</b> installed on your server.
+This plugin requires at least WordPress <b>5.0</b> (remember always to keep your WordPress installation up to date!) and <b>PHP 7.4</b> on your server.
 
 == Frequently Asked Questions ==
 
 = Is it free? =
-Yes, it is under GPLv2 (and later) licence. However, you can donate me a few dollars if it makes you feel good. I certainly have nothing against it.
+Yes, it's licensed under GPLv2 (or later). However, if you'd like to support my work, you're welcome to make a donation of a few dollars. I won’t stop you :)
 
 == Screenshots ==
 
-1. If you can't see CSS panel, check screen options and make sure "Custom CSS" is checked
-2. Write your CSS code available only for your post or page. You may force the plugin to add CSS code only on single page view.
-3. Added settings
+1. If you don't see the CSS panel, open Screen Options and make sure "Custom CSS" is checked.
+2. Enter CSS code that will apply only to your post or page. You can force the plugin to apply it only on single post/page views.
+3. Plugin settings panel.
 
 == Changelog ==
+= 0.2.5 =
+* Release date: 2025-07-17
+* Highlighting for CSS code is now enabled by default.
+    7 years ago it was optional due to performance concerns on
+    slower machines — nowadays that looks outdated; you can still
+    disable it using:
+    `add_filter('postpage_sccss-highlight_code', '__return_false');`
+* Fixed issue with incorrect validation of an empty CSS field
+* Replaced CSS validation with a linting mechanism
+* Minor code improvements and compatibility testing with newer PHP and WordPress versions
+* Removed birthday notice
 
 = 0.2.4 =
 * Release date: 2022-01-20
@@ -102,3 +114,7 @@ Yes, it is under GPLv2 (and later) licence. However, you can donate me a few dol
 * Release date: 2016-12-16
 * Status: Stable
 * Initial release
+
+== Upgrade Notice ==
+= 0.2.5 =
+Several important code improvements have been made. The plugin is now leaner, runs more efficiently, and no longer clutters the screen with extra information. We recommend updating.
