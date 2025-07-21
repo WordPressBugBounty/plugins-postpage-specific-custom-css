@@ -1,20 +1,22 @@
-=== Post/Page specific custom CSS ===
+=== Post/Page Specific Custom Code ===
 
-Tags: custom css, css per page, css per post, post styling, page styling, individual css, archive css, single view, archive view, CSS, custom, post, page, specific, custom CSS, specific page, specific post, certain page, certain post, view, single
+Tags: custom css, per-page css, post-specific, woocommerce, product, page-specific, archive css
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
 Contributors: lukasznowicki
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LEXEGNRGEF7H4
 Stable tag: 0.2.5
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Post/Page specific custom CSS allows you to add custom CSS styles to individual posts or pages. It provides a dedicated area in the post/page edit screen where you can write your CSS code. You can also choose whether the CSS should apply only to the single post/page view or also to archive views.
+Add custom CSS to posts, pages, or WooCommerce products, with optional archive support. Includes a dedicated editor box.
 
 == Description ==
 
-Post/Page specific custom CSS allows you to add custom CSS styles to individual posts or pages. It provides a dedicated area in the post/page edit screen where you can write your CSS code. You can also choose whether the CSS should apply only to the single post/page view or also to archive views.
+Post/Page/Product-specific custom code allows you to add custom CSS styles to individual posts, pages, or WooCommerce products. It provides a dedicated area in the editor screen where you can write your CSS code. You can also choose whether the CSS should apply only to the single view or also to archive-type views.
 
-A new meta box will appear below the content editor on the post and page edit screens. You can enter any custom CSS there. You can also specify whether the CSS should load only on the single post/page view or also on archive-type pages.
+A new meta box will appear below the content editor on the edit screen for posts, pages, and products. You can enter any custom CSS there and decide whether it loads only on the single view or also on archive pages like category listings or product grids.
 
 == Installation ==
 
@@ -22,7 +24,7 @@ A new meta box will appear below the content editor on the post and page edit sc
 
 Automatic installation is the easiest way. Simply log in to your WordPress admin panel, go to the Plugins menu, and click "Add New".
 
-In the search field, type *Post/Page specific custom CSS* and click Search Plugins. Then click the “Install Now” button.
+In the search field, type *Post/Page Specific Custom Code* and click Search Plugins. Then click the “Install Now” button.
 
 = Manual installation =
 
@@ -46,6 +48,11 @@ Yes, it's licensed under GPLv2 (or later). However, if you'd like to support my 
 3. Plugin settings panel.
 
 == Changelog ==
+= 0.3.0 =
+* Release date: 2025-07-21
+* Added support for WooCommerce products (custom CSS can now be assigned to individual products)
+* Plugin renamed from "Post/Page specific custom CSS" to "Post/Page Specific Custom Code"
+
 = 0.2.5 =
 * Release date: 2025-07-17
 * Highlighting for CSS code is now enabled by default.

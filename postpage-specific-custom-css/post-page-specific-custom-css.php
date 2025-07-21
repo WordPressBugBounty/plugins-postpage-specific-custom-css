@@ -1,23 +1,47 @@
 <?php
 /**
- * Plugin Name: Post/Page specific custom CSS
+ * Plugin Name: Post/Page Specific Custom Code
  * Plugin URI: https://wordpress.org/plugins/postpage-specific-custom-css/
- * Description: Post/Page specific custom CSS will allow you to add cascade stylesheet to specific posts/pages. It will give you special area in the post/page edit field to attach your CSS. It will also let you decide if this CSS has to be added in multi-page/post view (like archive posts) or only in a single view.
- * Version: 0.2.5
+ * Description: Post/Page Specific Custom Code allows you to add cascading stylesheets to individual posts, pages, and WooCommerce products. It provides a dedicated area in the edit screen where you can attach your CSS. You can also choose whether the CSS should be applied only on single views or also on multi-item views (like archive pages).
+ * Version: 0.3.0
  * Author: Łukasz Nowicki
  * Author URI: https://lukasznowicki.info/
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Tested up to: 6.8
  * Text Domain: postpage-specific-custom-css
+ * License: GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 namespace Phylax\WPPlugin\PPCustomCSS;
 
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
 use WP_Post;
 use const DOING_AUTOSAVE;
 
 defined( 'ABSPATH' ) or exit;
+
+add_action( 'admin_notices', function () {
+    if ( ! is_user_logged_in() ) {
+        return;
+    }
+    $user         = wp_get_current_user();
+    $meta_key     = 'phylax_pp_scc_plugin_name_change_notice_dismissed';
+    $already_seen = get_user_meta( $user->ID, $meta_key, true );
+    if ( ! $already_seen ) {
+        echo '<div class="notice notice-info is-dismissible">';
+        echo '<p><strong>Heads up!</strong> The plugin <em>Post/Page specific custom CSS</em> has been renamed to <em>Post/Page Specific Custom Code</em>. In this update, we’ve also added full support for WooCommerce products – you can now apply custom code directly to them.</p>';
+        echo '</div>';
+        update_user_meta( $user->ID, $meta_key, '1' );
+    }
+} );
+
+add_action( 'before_woocommerce_init', function () {
+    if ( class_exists( FeaturesUtil::class ) ) {
+        FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+    }
+} );
 
 require_once __DIR__ . '/ViewHelpers.php';
 
@@ -32,6 +56,7 @@ class Plugin {
     const OPT_CONTROL_USER_EDITOR = 'control_user_editor';
     const OPT_DEFAULT_POST_CSS    = 'default_post_css';
     const OPT_DEFAULT_PAGE_CSS    = 'default_page_css';
+    const OPT_DEFAULT_PRODUCT_CSS = 'default_product_css';
     const OPT_BIGGER_TEXTAREA     = 'bigger_textarea';
 
     const POST_META_CSS    = '_phylax_ppsccss_css';
@@ -119,13 +144,17 @@ class Plugin {
             $this,
             'section_default_values',
         ],                    self::MENU_SLUG );
-        add_settings_field( 'default_post_css', __( 'Default stylesheet for new posts', 'postpage-specific-custom-css' ), [
+        add_settings_field( 'default_post_css', __( 'Default stylesheet for new Posts', 'postpage-specific-custom-css' ), [
             $this,
             'default_post_css',
         ],                  self::MENU_SLUG, 'default-values' );
-        add_settings_field( 'default_page_css', __( 'Default stylesheet for new pages', 'postpage-specific-custom-css' ), [
+        add_settings_field( 'default_page_css', __( 'Default stylesheet for new Pages', 'postpage-specific-custom-css' ), [
             $this,
             'default_page_css',
+        ],                  self::MENU_SLUG, 'default-values' );
+        add_settings_field( 'default_product_css', __( 'Default stylesheet for new WooCommerce Products', 'postpage-specific-custom-css' ), [
+            $this,
+            'default_product_css',
         ],                  self::MENU_SLUG, 'default-values' );
         add_settings_field( 'bigger_textarea', __( 'Bigger input field', 'postpage-specific-custom-css' ), [
             $this,
@@ -166,6 +195,15 @@ class Plugin {
         $this->view->closeFieldset();
     }
 
+    public function default_product_css() {
+        $settings = (array) get_option( self::OPTION_NAME );
+        $value    = wp_unslash( $settings[ self::OPT_DEFAULT_PRODUCT_CSS ] ?? '' );
+        $this->view->openFieldset( self::OPT_DEFAULT_PRODUCT_CSS );
+        $this->view->screenReaderLegend( __( 'Default stylesheet for new WooCommerce Product', 'postpage-specific-custom-css' ) );
+        $this->view->textAreaField( 'defaultProductCSS', self::OPT_DEFAULT_PRODUCT_CSS, $value );
+        $this->view->closeFieldset();
+    }
+
     public function section_default_values() {
         $this->view->settingsInlineStyle();
         $this->view->printFieldDescription( __( 'You can define pre-filled CSS code that will be automatically added to every newly created post or page. <strong>Note: the code is not validated — invalid CSS is allowed and will be stored as is.</strong>', 'postpage-specific-custom-css' ) );
@@ -174,7 +212,7 @@ class Plugin {
     public function section_plugin_behavior() {}
 
     public function page_settings_link_filter( array $links ): array {
-        $links[] = '<a href="' . $this->build_settings_link() . '">' . __( 'Settings', 'postpage-specific-custom-css' ) . '</a>';
+        array_unshift( $links, '<a href="' . $this->build_settings_link() . '">' . __( 'Settings', 'postpage-specific-custom-css' ) . '</a>' );
 
         return $links;
     }
@@ -184,7 +222,7 @@ class Plugin {
     }
 
     public function add_options_page() {
-        $sub_menu_suffix = add_submenu_page( self::PARENT_MENU_SLUG, __( 'Post/Page specific custom CSS', 'postpage-specific-custom-css' ), __( 'Post/Page CSS', 'postpage-specific-custom-css' ), self::CAP_MANAGE_OPTIONS, self::MENU_SLUG, [
+        $sub_menu_suffix = add_submenu_page( self::PARENT_MENU_SLUG, __( 'Post/Page Specific Custom Code', 'postpage-specific-custom-css' ), __( 'Post/Page CSS', 'postpage-specific-custom-css' ), self::CAP_MANAGE_OPTIONS, self::MENU_SLUG, [
             $this,
             'options_page_view',
         ] );
@@ -198,7 +236,7 @@ class Plugin {
         ?>
         <div class="wrap">
             <h1><?php
-                echo __( 'Post/Page Custom CSS', 'postpage-specific-custom-css' ); ?></h1>
+                echo __( 'Post/Page Custom Code', 'postpage-specific-custom-css' ); ?></h1>
             <form action="options.php" method="POST">
                 <?php
                 settings_fields( self::OPTION_GROUP ); ?>
@@ -214,6 +252,7 @@ class Plugin {
             jQuery(function ($) {
                 const defaultPageCSS = $('#defaultPageCSS');
                 const defaultPostCSS = $('#defaultPostCSS');
+                const defaultProductCSS = $('#defaultProductCSS');
                 let editorSettings;
                 if (defaultPageCSS.length === 1) {
                     editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
@@ -228,6 +267,13 @@ class Plugin {
                         indentUnit: 2, tabSize: 2, mode: 'css', lint: false,
                     });
                     wp.codeEditor.initialize(defaultPostCSS, editorSettings);
+                }
+                if (defaultProductCSS.length === 1) {
+                    editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
+                    editorSettings.codemirror = _.extend({}, editorSettings.codemirror, {
+                        indentUnit: 2, tabSize: 2, mode: 'css', lint: false,
+                    });
+                    wp.codeEditor.initialize(defaultProductCSS, editorSettings);
                 }
             });
         </script>
@@ -265,17 +311,18 @@ class Plugin {
     public function join(
         $content, $css
     ): string {
-        return '<!-- ' . __( 'Added by Post/Page specific custom CSS plugin, thank you for using!', 'postpage-specific-custom-css' ) . ' -->' . PHP_EOL . '<style>' . $css . '</style>' . PHP_EOL . $content;
+        return '<!-- ' . __( 'Added by Post/Page Specific Custom Code plugin, thank you for using!', 'postpage-specific-custom-css' ) . ' -->' . PHP_EOL . '<style>' . $css . '</style>' . PHP_EOL . $content;
     }
 
     public function add_meta_boxes() {
         if ( $this->allowedToView() ) {
-            add_meta_box( 'phylax_ppsccss', __( 'Custom CSS', 'postpage-specific-custom-css' ), [
+            add_meta_box( 'phylax_ppsccss', __( 'Custom Code', 'postpage-specific-custom-css' ), [
                 $this,
                 'render_post_page_edit_view',
             ], [
                               'post',
                               'page',
+                              'product',
                           ], 'advanced', 'high' );
         }
     }
@@ -304,7 +351,7 @@ class Plugin {
         if ( ! wp_verify_nonce( $nonce_value, 'phylax_ppsccss' ) ) {
             return;
         }
-        if ( ( 'page' != $_POST['post_type'] ) && ( 'post' != $_POST['post_type'] ) ) {
+        if ( ( 'product' != $_POST['post_type'] ) && ( 'page' != $_POST['post_type'] ) && ( 'post' != $_POST['post_type'] ) ) {
             return;
         }
         if ( ! $this->allowedToView() ) {
@@ -331,6 +378,10 @@ class Plugin {
         $body_key = "";
         $settings = (array) get_option( self::OPTION_NAME );
         switch ( $post->post_type ) {
+            case 'product':
+                $screen   = __( 'Custom stylesheet for your product', 'postpage-specific-custom-css' );
+                $body_key = self::OPT_DEFAULT_PRODUCT_CSS;
+                break;
             case 'post':
                 $screen   = __( 'Custom stylesheet for your post', 'postpage-specific-custom-css' );
                 $body_key = self::OPT_DEFAULT_POST_CSS;
@@ -487,7 +538,7 @@ class Plugin {
                         phylaxCSSEditorDOM.trigger('change');
                         if (window.wp?.data?.dispatch) {
                             try {
-                                window.wp.data.dispatch('core/editor').editPost({meta:{}});
+                                window.wp.data.dispatch('core/editor').editPost({meta: {}});
                             } catch (e) {
                             }
                         } else if (window.wp?.autosave?.local) {
