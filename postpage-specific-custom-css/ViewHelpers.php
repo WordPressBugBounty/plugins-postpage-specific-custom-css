@@ -4,38 +4,50 @@ namespace Phylax\WPPlugin\PPCustomCSS;
 
 class ViewHelpers {
 
-    public $settings;
-    public $option_name;
+    /** @var array<string, mixed> */
+    public array $settings;
 
+    public string $option_name;
+
+    /**
+     * @param array<string, mixed> $settings
+     */
     public function __construct( array $settings, string $option_name ) {
         $this->settings    = $settings;
         $this->option_name = $option_name;
     }
 
-    public function textAreaField( string $id, string $key, string $value, array $errors = [], int $error_count = 0 ) {
+    /**
+     * @param array<int, string> $errors
+     */
+    public function textAreaField( string $id, string $key, string $value, array $errors = [], int $error_count = 0 ): void {
+        unset( $errors, $error_count );
         ?>
         <div>
             <label class="ppsc_screen_wide">
             <textarea
-                    id="<?php
-                    echo esc_attr( $id ); ?>"
-                    name="<?php
-                    $this->printSafeAttr( $this->option_name, $key ); ?>"
+                    id="<?php echo esc_attr( $id ); ?>"
+                    name="<?php $this->printSafeAttr( $this->option_name, $key ); ?>"
                     class="ppsc_css_source large-text code"
                     rows="10"
-                    cols="50"><?php
-                echo esc_textarea( $value ); ?></textarea>
+                    cols="50"><?php echo esc_textarea( $value ); ?></textarea>
             </label>
         </div>
         <?php
     }
 
+    /**
+     * @param array<int, string> $errors
+     */
     public function getErrorItems( array $errors, int $error_count ): string {
         $error_items = '';
         if ( $error_count > 0 ) {
             $error_items .= '<ul class="ppscc-css-errors">';
             foreach ( $errors as $error ) {
-                $error_items .= '<li>' . $error . '</li>';
+                if ( ! is_scalar( $error ) ) {
+                    continue;
+                }
+                $error_items .= '<li>' . esc_html( (string) $error ) . '</li>';
             }
             $error_items .= '</ul>';
         }
@@ -43,13 +55,15 @@ class ViewHelpers {
         return $error_items;
     }
 
-    public function printSafeAttr( string $option, string $key = '' ) {
-        echo $this->getSafeAttr( $option, $key );
+    public function printSafeAttr( string $option, string $key = '' ): void {
+        echo esc_attr( $this->getSafeAttr( $option, $key ) );
     }
 
     public function getSafeAttr( string $option, string $key = '' ): string {
-        $option = preg_replace( "/[^A-Za-z0-9_-]/", '', $option );
-        $key    = preg_replace( "/[^A-Za-z0-9_-]/", '', $key );
+        $option = preg_replace( '/[^A-Za-z0-9_-]/', '', $option );
+        $key    = preg_replace( '/[^A-Za-z0-9_-]/', '', $key );
+        $option = is_string( $option ) ? $option : '';
+        $key    = is_string( $key ) ? $key : '';
         $view   = $option;
         if ( '' !== $key ) {
             $view .= '[' . $key . ']';
@@ -58,43 +72,38 @@ class ViewHelpers {
         return $view;
     }
 
-    public function checkBoxField( string $key, string $label, bool $br = true, int $value = - 1 ) {
-        if ( - 1 === $value ) {
+    public function checkBoxField( string $key, string $label, bool $br = true, int $value = -1 ): void {
+        if ( -1 === $value ) {
             $value = (int) ( $this->settings[ $key ] ?? 0 );
         }
+        $field_id = 'item_' . $key;
         ?>
-        <input type="hidden" name="<?php
-        $this->printSafeAttr( $this->option_name, $key ); ?>" value="0">
-        <label for="item_<?php
-        echo $key; ?>">
+        <input type="hidden" name="<?php $this->printSafeAttr( $this->option_name, $key ); ?>" value="0">
+        <label for="<?php echo esc_attr( $field_id ); ?>">
             <input
-                    id="item_<?php
-                    echo $key; ?>"
+                    id="<?php echo esc_attr( $field_id ); ?>"
                     type="checkbox"
-                    name="<?php
-                    $this->printSafeAttr( $this->option_name, $key ); ?>"
+                    name="<?php $this->printSafeAttr( $this->option_name, $key ); ?>"
                     value="1"
-                <?php
-                echo( ( $value === 1 ) ? 'checked="checked"' : '' ); ?>
-            > <?php
-            echo $label; ?>
+                <?php echo ( 1 === $value ) ? 'checked="checked"' : ''; ?>
+            > <?php echo esc_html( $label ); ?>
         </label>
         <?php
         if ( $br ) {
-            echo '<br>' . "\n";
+            echo "<br>\n";
         }
     }
 
-    public function settingsInlineStyle() {
+    public function settingsInlineStyle(): void {
         ?>
         <style>
-            .css-error-message {
+            .ppscc-css-errors {
                 color: red;
                 margin-bottom: 0.5rem;
                 font-family: monospace;
             }
 
-            .css-error {
+            #phylax_ppsccss_css_outer .phylax-ppsccss-css-error {
                 background-color: rgba(255, 0, 0, 0.2);
                 border-bottom: 1px solid red;
             }
@@ -106,32 +115,32 @@ class ViewHelpers {
         <?php
     }
 
-    public function openFieldset( string $id = '' ) {
-        echo '<fieldset' . ( ( '' !== $id ) ? ' id="ppscc_set_' . $id . '"' : '' ) . '>';
+    public function openFieldset( string $id = '' ): void {
+        echo '<fieldset';
+        if ( '' !== $id ) {
+            echo ' id="' . esc_attr( 'ppscc_set_' . $id ) . '"';
+        }
+        echo '>';
     }
 
-    public function closeFieldset() {
+    public function closeFieldset(): void {
         echo "</fieldset>\n";
     }
 
-    public function screenReaderLegend( string $content ) {
+    public function screenReaderLegend( string $content ): void {
         ?>
         <legend class="screen-reader-text">
-            <span><?php
-                echo $content; ?></span>
+            <span><?php echo esc_html( $content ); ?></span>
         </legend>
         <?php
     }
 
-    public function printFieldDescription( string $content ) {
+    public function printFieldDescription( string $content ): void {
         echo $this->getFieldDescription( $content );
     }
 
     public function getFieldDescription( string $content ): string {
-        return <<< FLDS
-    <p class="description">
-        $content
-    </p>
-FLDS;
+        // Concatenation avoids heredoc interpolating "$..." inside translated strings.
+        return '<p class="description">' . esc_html( $content ) . '</p>';
     }
 }
